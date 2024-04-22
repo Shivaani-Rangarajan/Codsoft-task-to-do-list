@@ -1,0 +1,83 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+struct Task {
+    std::string description;
+    bool done;
+};
+
+void printTasks(const std::vector<Task>& tasks) {
+    std::cout << "To-Do List:" << std::endl;
+    for (size_t i = 0; i < tasks.size(); ++i) {
+        std::cout << i + 1 << ". ";
+        if (tasks[i].done) {
+            std::cout << "[DONE] ";
+        }
+        std::cout << tasks[i].description << std::endl;
+    }
+}
+
+int main() {
+    std::vector<Task> tasks;
+    std::string input;
+    int choice;
+
+    while (true) {
+        std::cout << "Menu:" << std::endl;
+        std::cout << "1. Add task" << std::endl;
+        std::cout << "2. Delete task" << std::endl;
+        std::cout << "3. Mark task as done" << std::endl;
+        std::cout << "4. Print tasks" << std::endl;
+        std::cout << "5. Exit" << std::endl;
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                std::cout << "Enter task description: ";
+                std::cin.ignore();
+                std::getline(std::cin, input);
+                tasks.push_back({input, false});
+                break;
+            case 2:
+                printTasks(tasks);
+                if (!tasks.empty()) {
+                    std::cout << "Enter task number to delete: ";
+                    std::cin >> choice;
+                    if (choice > 0 && choice <= tasks.size()) {
+                        tasks.erase(tasks.begin() + choice - 1);
+                    } else {
+                        std::cout << "Invalid task number." << std::endl;
+                    }
+                } else {
+                    std::cout << "No tasks to delete." << std::endl;
+                }
+                break;
+            case 3:
+                printTasks(tasks);
+                if (!tasks.empty()) {
+                    std::cout << "Enter task number to mark as done: ";
+                    std::cin >> choice;
+                    if (choice > 0 && choice <= tasks.size()) {
+                        tasks[choice - 1].done = true;
+                    } else {
+                        std::cout << "Invalid task number." << std::endl;
+                    }
+                } else {
+                    std::cout << "No tasks to mark as done." << std::endl;
+                }
+                break;
+            case 4:
+                printTasks(tasks);
+                break;
+            case 5:
+                std::cout << "Exiting program." << std::endl;
+                return 0;
+            default:
+                std::cout << "Invalid choice. Please enter a number between 1 and 5." << std::endl;
+        }
+    }
+
+    return 0;
+}
